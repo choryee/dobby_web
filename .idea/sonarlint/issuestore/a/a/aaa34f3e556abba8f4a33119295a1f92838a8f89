@@ -40,12 +40,3 @@ PWeb:AvoidCommentedOutCodeCheckG"Remove this commented out code.(®êŠÖ8ˆª¦éÅ
 PWeb:AvoidCommentedOutCodeCheckH"Remove this commented out code.(îØº¤8ˆª¦éÅ1
 PWeb:AvoidCommentedOutCodeCheckI"Remove this commented out code.(âàğÙ8ˆª¦éÅ1
 A	Web:S5256R"%Add "<th>" headers to this "<table>".(ğÅäª8òëãçÅ1
-Mjavascript:S1128`"%Remove this unused import of 'async'.(Ûë¾ôúÿÿÿÿ8Ñ´‚ì1
-Rjavascript:S1128a"*Remove this unused import of 'ColumTable'.(²¦˜›øÿÿÿÿ8Ò´‚ì1
-Bjavascript:S125Š"Remove this commented out code.(Š²ş¿8Ò´‚ì1
-Gjavascript:S125"Remove this commented out code.(óÖÜùÿÿÿÿ8Ó´‚ì1
-Gjavascript:S125’"Remove this commented out code.(¸ö¸šüÿÿÿÿ8Ó´‚ì1
-Bjavascript:S125¥"Remove this commented out code.(­îÈ8Ó´‚ì1
-Bjavascript:S125ë"Remove this commented out code.(É¼…Ğ8Ó´‚ì1
-Bjavascript:S125„"Remove this commented out code.(É¼…Ğ8Ô´‚ì1
-Gjavascript:S125"Remove this commented out code.(ÆÍ¬ãÿÿÿÿÿ8Ô´‚ì1

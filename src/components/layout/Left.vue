@@ -9,10 +9,10 @@
           </router-link>
 
           <router-link class="nav-link" style="text-decoration:none" to="/dayoffs">
-          연차사용내역조회
+          달력 연차사용내역조회
           </router-link>
           <router-link class="nav-link" style="text-decoration:none" to="/dayoff">
-            연차정보조회
+            개인 연차정보조회
           </router-link>
 
           <a class="nav-link collapsed" href="#"

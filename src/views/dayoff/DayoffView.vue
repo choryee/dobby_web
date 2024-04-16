@@ -1,9 +1,14 @@
 <template>
     <div class="button-container">
+      <div >
+        <h5 style="text-align: left">-- DayoffView.vue --</h5>
+      </div><br/>
       <div class="input_field">
-        <select v-model="params.year">
-          <option v-for="year in years" :key="year" :value="year">
-            {{ year }}
+        Year >>
+        <select v-model="params.year"> <!--v-model="params.year" 이건 단순히, params객체의 year키의 값과 연동시키는 것.  -->
+          <!--years는 함수인데도, v-for가 되는 듯. -->
+          <option v-for="yearValue in years" :key="year" :value="yearValue">
+            {{ yearValue }}
           </option>
         </select>
       </div>
@@ -126,7 +131,7 @@ export default { // http://localhost:3000/dayoff/
       dayoffInfo: {},
       params: {
         employeeNo: '',
-        year: new Date().getFullYear(),
+        year : new Date().getFullYear(),
       },
       user:{},
       //employeeNo:'',
@@ -150,9 +155,10 @@ export default { // http://localhost:3000/dayoff/
     };
 
   },
+
   computed: {
     years() {
-      const currentYear = new Date().getFullYear();
+      const currentYear = new Date().getFullYear(); //2024
       const array = [];
       for (let i = 2021; i <= currentYear; i++) {
         array.push(i);
@@ -160,7 +166,7 @@ export default { // http://localhost:3000/dayoff/
       return array;
     },
 
-    ...mapState(['employeeNo'])
+    ...mapState(['employeeNo']) // ...mapState는 computed에 넣어야. 240415
   },
 
   created() {
@@ -170,7 +176,7 @@ export default { // http://localhost:3000/dayoff/
   mounted() {
     const getUser = sessionStorage.getItem('setUser');
     console.log('sessionStorage.getItem>> ', JSON.parse(getUser));
-    this.user = JSON.parse(getUser);
+    this.user = JSON.parse(getUser); // JSON-->객체로 바꾸는것.
     console.log('this.user>> ', this.user);
 
     this.fetchDayoffRemaining();
@@ -194,6 +200,8 @@ export default { // http://localhost:3000/dayoff/
         // const url = `dayoff/employee/${employeeNo}
 // http://localhost:8080/dayoff/employee/?year=2024 400 (Bad Request)
         //const response = await network.dayoff.dayoffUse(employeeNo,this.params);
+
+        // network.dayoff.dayoffUse(this.params);자체가 비동기이므로, 앞에 await붙여 줘야.
         const response = await network.dayoff.dayoffUse(this.params);
         const {result} = response; //구조분해할당 임.
         console.log('dayoffUse response>>', response);
@@ -228,20 +236,22 @@ export default { // http://localhost:3000/dayoff/
             직급: result.rankName,
           },
         ];
-        // this.employeeDayoffData = result.dayoffDetailList
-        //     .map(item => ({
-        //       연차종류: item.codeName,
-        //       시작날짜: item.startDayoffDt,
-        //       종료날짜: item.endDayoffDt,
-        //       기한: item.usedDayoff,
-        //     }))
-            // .concat(result.dayoffDutyList.map(item => ({
-            //   연차종류: item.title,
-            //   시작날짜: item.dutyDate,
-            //   종료날짜: item.dutyDate,
-            //   기한: 1,
-            // })))
-            // .sort((a, b) => new Date(b.시작날짜) - new Date(a.시작날짜)); // "시작날짜"를 기준으로 내림차순 정렬
+
+        //---
+        this.employeeDayoffData = result.dayoffDetailList
+            .map(item => ({
+              연차종류: item.codeName,
+              시작날짜: item.startDayoffDt,
+              종료날짜: item.endDayoffDt,
+              기한: item.usedDayoff,
+            }))
+            .concat(result.dayoffDutyList.map(item => ({
+              연차종류: item.title,
+              시작날짜: item.dutyDate,
+              종료날짜: item.dutyDate,
+              기한: 1,
+            })))
+            .sort((a, b) => new Date(b.시작날짜) - new Date(a.시작날짜)); // "시작날짜"를 기준으로 내림차순 정렬
 
       } catch (error) {
         console.error('Failed to fetch data 가져오기 실패 :', error);
@@ -347,11 +357,8 @@ export default { // http://localhost:3000/dayoff/
     back() {
       router.back();
     }
-
   }
-
 };
-
 </script>
 
 <style>

@@ -35,6 +35,11 @@ const routes = [
     component: () => import('@/views/holidayWork/HolidayWorkView.vue')
   },
   {
+    path: '/dayoff/', // 연차정보조회
+    name: `insertDayoff`,
+    component: ()=>import('@/views/dayoff/DayoffView.vue')
+  },
+  {
     path: '/dayoffs',
     name: 'DayoffListView',
     component: () => import('@/views/dayoff/DayoffListView.vue')
@@ -44,11 +49,7 @@ const routes = [
     name: 'dashboard',
     component: () => import('@/views/dashBoard/DashBoardView.vue')
   },
-  {
-    path: '/dayoff/',
-    name: `insertDayoff`,
-    component: ()=>import('@/views/dayoff/DayoffView.vue')
-  },
+
   {
     path: '/dayoff/:employeeNo',
     name: `dayoff`,
