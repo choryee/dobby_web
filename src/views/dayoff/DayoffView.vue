@@ -7,7 +7,7 @@
         Year >>
         <select v-model="params.year"> <!--v-model="params.year" 이건 단순히, params객체의 year키의 값과 연동시키는 것.  -->
           <!--years는 함수인데도, v-for가 되는 듯. -->
-          <option v-for="yearValue in years" :key="year" :value="yearValue">
+          <option v-for="yearValue in years" :key="yearValue" :value="yearValue">
             {{ yearValue }}
           </option>
         </select>
@@ -67,10 +67,12 @@
               </select>
             </td>
           </tr>
+
           <tr>
             <th class="common-th">사번</th>
             <td class="common-td"><input v-model="formData.employeeNo"></td>
           </tr>
+
           <tr>
             <th class="common-th">wid</th>
             <td class="common-td"><input v-model="formData.wid"></td>
@@ -121,9 +123,10 @@ export default { // http://localhost:3000/dayoff/
   },
   data() {
     return {
-      authInfo: ['권한', '사번', '네이버웍스ID'],
-      employeeInfo: ['이름', '입사년도', '직급'],
-      tableHeaders: ['연차종류', '시작날짜', '종료날짜', '기한'],
+      // <ColumTable :headers="authInfo" :tableData="authData"/> ColumTable에 props으로 넘겨줌.
+      authInfo: ['권한(props으로 받은 것)', '사번', '네이버웍스ID'],
+      employeeInfo: ['이름(props으로 받은 것)', '입사년도', '직급'],
+      tableHeaders: ['연차종류(props으로 받은 것)', '시작날짜', '종료날짜', '기한'],
       authData: [],
       employeeData: [],
       employeeDayoffData: [],
@@ -201,7 +204,7 @@ export default { // http://localhost:3000/dayoff/
 // http://localhost:8080/dayoff/employee/?year=2024 400 (Bad Request)
         //const response = await network.dayoff.dayoffUse(employeeNo,this.params);
 
-        // network.dayoff.dayoffUse(this.params);자체가 비동기이므로, 앞에 await붙여 줘야.
+        // network.dayoff.dayoffUse(this.params);자체가 비동기이므로, 앞에 await붙여 줘야.240416
         const response = await network.dayoff.dayoffUse(this.params);
         const {result} = response; //구조분해할당 임.
         console.log('dayoffUse response>>', response);
@@ -237,21 +240,27 @@ export default { // http://localhost:3000/dayoff/
           },
         ];
 
-        //---
-        this.employeeDayoffData = result.dayoffDetailList
-            .map(item => ({
-              연차종류: item.codeName,
-              시작날짜: item.startDayoffDt,
-              종료날짜: item.endDayoffDt,
-              기한: item.usedDayoff,
-            }))
-            .concat(result.dayoffDutyList.map(item => ({
-              연차종류: item.title,
-              시작날짜: item.dutyDate,
-              종료날짜: item.dutyDate,
-              기한: 1,
-            })))
-            .sort((a, b) => new Date(b.시작날짜) - new Date(a.시작날짜)); // "시작날짜"를 기준으로 내림차순 정렬
+        //-------------
+        // employeeDayoffData=[]; 위에
+        this.employeeDayoffData=[
+          {employeeNo:'M073', dayoffType:'1002', dayoffDt:'2023-12-15', codeName:'오후반차', codeVal:'0.5'},
+          {employeeNo:'M073', dayoffType:'1001', dayoffDt:'2023-02-15', codeName:'연차', codeVal:'1'},
+          {employeeNo:'M073', dayoffType:'1003', dayoffDt:'2023-07-15', codeName:'오후반차', codeVal:'0.5'},
+        ]
+        // this.employeeDayoffData = result.dayoffDetailList
+        //     .map(item => ({
+        //       연차종류: item.codeName,
+        //       시작날짜: item.startDayoffDt,
+        //       종료날짜: item.endDayoffDt,
+        //       기한: item.usedDayoff,
+        //     }))
+        //     .concat(result.dayoffDutyList.map(item => ({
+        //       연차종류: item.title,
+        //       시작날짜: item.dutyDate,
+        //       종료날짜: item.dutyDate,
+        //       기한: 1,
+        //     })))
+        //     .sort((a, b) => new Date(b.시작날짜) - new Date(a.시작날짜)); // "시작날짜"를 기준으로 내림차순 정렬
 
       } catch (error) {
         console.error('Failed to fetch data 가져오기 실패 :', error);

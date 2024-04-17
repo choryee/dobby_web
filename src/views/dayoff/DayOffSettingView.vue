@@ -4,6 +4,7 @@
 
 <script>
 import DayOffDefaultSetting from "@/components/dayOff/dayOffDefaultSetting.vue";
+
 export default {
   name : 'DayOffSettingView',
   components: {
