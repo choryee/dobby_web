@@ -29,7 +29,6 @@
           <button type="button" class="btn btn-secondary mgr-1r">다음</button>
         </template>
 
-
         <button type="button" class="btn btn-success mgr-1r" @click="excelDownload">엑셀 다운로드</button>
 
       </div>

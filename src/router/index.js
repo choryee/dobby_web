@@ -35,12 +35,12 @@ const routes = [
     component: () => import('@/views/holidayWork/HolidayWorkView.vue')
   },
   {
-    path: '/dayoff/', // 연차정보조회
+    path: '/dayoff/', // 개인 연차정보조회
     name: `insertDayoff`,
     component: ()=>import('@/views/dayoff/DayoffView.vue')
   },
   {
-    path: '/dayoffs',
+    path: '/dayoffs', // 달력?
     name: 'DayoffListView',
     component: () => import('@/views/dayoff/DayoffListView.vue')
   },
@@ -65,7 +65,11 @@ const routes = [
     path: '/pattern',
     name: 'pattern',
     component: ()=>import('@/views/calendarPattern/CalendarPatternView.vue')
-
+  },
+  {
+    path: '/dayofflisttable',
+    name: 'dayofflisttable',
+    component: ()=>import('@/views/dayoff/DayoffListTable.vue')
   },
   { path: '/adminInfo',
     name: 'adminInfo',

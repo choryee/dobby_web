@@ -14,6 +14,9 @@
           <router-link class="nav-link" style="text-decoration:none" to="/dayoff">
             개인 연차정보조회
           </router-link>
+          <router-link class="nav-link" style="text-decoration:none" to="/dayofflisttable">
+            전체 휴가 리스트 보기
+          </router-link>
 
           <a class="nav-link collapsed" href="#"
              aria-expanded="false" aria-controls="collapsePages">

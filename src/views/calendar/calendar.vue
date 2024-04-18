@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid px-4">
-    <h1 class="mt-4">캘린더 calendar.vue </h1>
+    <h4 class="mt-4">캘린더 -- calendar.vue </h4>
     <FullCalendar :options="calendarOptions"/>
   </div>
 </template>

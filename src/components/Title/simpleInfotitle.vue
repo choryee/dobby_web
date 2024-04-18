@@ -1,5 +1,7 @@
 <template>
-  <h1 class="yearText">{{data.year}}</h1>
+
+  <h2 class="yearText">{{data.year}}</h2>
+  이건 simpleInfoTitle.vue
   <div class="simpleInfoTitle">
     <p>{{ data.name }}</p>
     <p class="totalDayoff">(지급 연차:
@@ -8,8 +10,8 @@
     </p>
 
     <div>
-      <span class="dutyDayoff">[의무연차:{{data.dutyDayoff}}]</span>
-    <p class="usedDayoff">사용연차: {{ data.usedDayoff }}</p>
+      <span class="dutyDayoff">[ 의무연차:{{data.dutyDayoff}}     ]</span>
+      <p class="usedDayoff">사용연차: {{ data.usedDayoff }}</p>
     </div>
 
     <p class="leftDayoff">남은연차: {{ data.leftDayOff }})</p>

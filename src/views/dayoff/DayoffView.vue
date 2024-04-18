@@ -32,16 +32,17 @@
       <SimpleInfoTitle :data="dayoffInfo"/>
 
       <div class="inner_wrap">
-        <p class="title">계정 정보</p>
+        <p class="title">계정 정보 -- ColumTable.vue</p>
         <ColumTable :headers="authInfo" :tableData="authData"/>
       </div>
 
       <div class="inner_wrap">
-        <p class="title">사원 정보</p>
+        <p class="title">사원 정보 -- ColumTable.vue</p>
         <ColumTable :headers="employeeInfo" :tableData="employeeData"/>
       </div>
 
       <div class="inner_wrap">
+        <p class="title">연차 정보 -- TableComponent.vue</p>
         <TableComponent :headers="tableHeaders" :tableData="employeeDayoffData"/>
       </div>
     </div>
