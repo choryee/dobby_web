@@ -9,8 +9,8 @@
           {{ row[header] }}
         </td>
       </tr>
-
       </tbody>
+
     </table>
   </div>
 </template>
@@ -28,8 +28,9 @@ export default {
     tableData: {
       type: Array,
       required: true
-    }
+    },
   }
+
 };
 </script>
 

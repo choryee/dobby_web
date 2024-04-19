@@ -125,9 +125,9 @@ export default { // http://localhost:3000/dayoff/
   data() {
     return {
       // <ColumTable :headers="authInfo" :tableData="authData"/> ColumTable에 props으로 넘겨줌.
-      authInfo: ['권한(props으로 받은 것)', '사번', '네이버웍스ID'],
-      employeeInfo: ['이름(props으로 받은 것)', '입사년도', '직급'],
-      tableHeaders: ['연차종류(props으로 받은 것)', '시작날짜', '종료날짜', '기한'],
+      authInfo: ['권한', '사번', '네이버웍스ID'],
+      employeeInfo: ['이름', '입사년도', '직급'],
+      tableHeaders: ['연차종류', '시작날짜', '종료날짜', '기한'],
       authData: [],
       employeeData: [],
       employeeDayoffData: [],
@@ -160,7 +160,8 @@ export default { // http://localhost:3000/dayoff/
 
   },
 
-  computed: {
+  computed: {// computed 속성은 캐싱된 데이터를 생성합니다. 이 속성은 의존하는 데이터가 변경될 때만 다시 계산됩니다
+
     years() {
       const currentYear = new Date().getFullYear(); //2024
       const array = [];
@@ -184,6 +185,7 @@ export default { // http://localhost:3000/dayoff/
     console.log('this.user>> ', this.user);
 
     this.fetchDayoffRemaining();
+
     console.log('editMode : ', this.editMode);
     console.log('$route.path : ', this.$route.path);
     console.log('$route.params : ', this.$route.params);
@@ -202,7 +204,7 @@ export default { // http://localhost:3000/dayoff/
 
       try {
         // const url = `dayoff/employee/${employeeNo}
-// http://localhost:8080/dayoff/employee/?year=2024 400 (Bad Request)
+        // http://localhost:8080/dayoff/employee/?year=2024 400 (Bad Request)
         //const response = await network.dayoff.dayoffUse(employeeNo,this.params);
 
         // network.dayoff.dayoffUse(this.params);자체가 비동기이므로, 앞에 await붙여 줘야.240416
@@ -230,7 +232,7 @@ export default { // http://localhost:3000/dayoff/
           {
             권한: result.rankName,
             사번: result.employeeNo,
-            네이버웍스ID: result.wid,
+            네이버웍스ID: result.wid === null ? '몰라':'알아',
           },
         ];
         this.employeeData = [
@@ -238,30 +240,31 @@ export default { // http://localhost:3000/dayoff/
             이름: result.name,
             입사년도: result.joiningDt,
             직급: result.rankName,
+
           },
         ];
 
         //-------------
         // employeeDayoffData=[]; 위에
-        this.employeeDayoffData=[
-          {employeeNo:'M073', dayoffType:'1002', dayoffDt:'2023-12-15', codeName:'오후반차', codeVal:'0.5'},
-          {employeeNo:'M073', dayoffType:'1001', dayoffDt:'2023-02-15', codeName:'연차', codeVal:'1'},
-          {employeeNo:'M073', dayoffType:'1003', dayoffDt:'2023-07-15', codeName:'오후반차', codeVal:'0.5'},
-        ]
-        // this.employeeDayoffData = result.dayoffDetailList
-        //     .map(item => ({
-        //       연차종류: item.codeName,
-        //       시작날짜: item.startDayoffDt,
-        //       종료날짜: item.endDayoffDt,
-        //       기한: item.usedDayoff,
-        //     }))
-        //     .concat(result.dayoffDutyList.map(item => ({
-        //       연차종류: item.title,
-        //       시작날짜: item.dutyDate,
-        //       종료날짜: item.dutyDate,
-        //       기한: 1,
-        //     })))
-        //     .sort((a, b) => new Date(b.시작날짜) - new Date(a.시작날짜)); // "시작날짜"를 기준으로 내림차순 정렬
+        // this.employeeDayoffData=[
+        //   {employeeNo:'M073', dayoffType:'1002', dayoffDt:'2023-12-15', codeName:'오후반차', codeVal:'0.5'},
+        //   {employeeNo:'M073', dayoffType:'1001', dayoffDt:'2023-02-15', codeName:'연차', codeVal:'1'},
+        //   {employeeNo:'M073', dayoffType:'1003', dayoffDt:'2023-07-15', codeName:'오후반차', codeVal:'0.5'},
+        // ]
+        this.employeeDayoffData = result.dayoffVacations
+            .map(item => ({
+              연차종류: item.codeName,
+              시작날짜: item.dayoffDt,
+              종료날짜: item.dayoffDt,
+              기한: item.codeVal
+            }))
+            // .concat(result.dayoffDutyList.map(item => ({
+            //   연차종류: item.title,
+            //   시작날짜: item.dutyDate,
+            //   종료날짜: item.dutyDate,
+            //   기한: 1,
+            // })))
+            .sort((a, b) => new Date(b.시작날짜) - new Date(a.시작날짜)); // "시작날짜"를 기준으로 내림차순 정렬
 
       } catch (error) {
         console.error('Failed to fetch data 가져오기 실패 :', error);
