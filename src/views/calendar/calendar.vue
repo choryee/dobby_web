@@ -2,6 +2,17 @@
   <div class="container-fluid px-4">
     <h4 class="mt-4">캘린더 -- calendar.vue </h4>
     <FullCalendar :options="calendarOptions"/>
+    <!-- 모달 -->
+<!--    <div v-if="showModal" class="modal">-->
+<!--      <div class="modal-content">-->
+<!--        <span class="close" @click="closeModal">&times;</span>-->
+<!--        &lt;!&ndash; 모달 내용 &ndash;&gt;-->
+<!--        <h2>이벤트 상세 정보</h2>-->
+<!--        <p>이벤트 이름: {{ selectedEvent.title }}</p>-->
+<!--        &lt;!&ndash; 추가적인 이벤트 정보 출력 &ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+    <popupCalDetail ref="popupDetail" />
   </div>
 </template>
 
@@ -12,21 +23,28 @@
 import axios from 'axios'
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction"
+import interactionPlugin from "@fullcalendar/interaction";
+import popupCalDetail from "@/views/calendar/popup-cal-detail.vue";
+import {DialogOption} from "@/views/calendar/DialogModels.js";
+import modal from '@/views/calendar/modal.vue'
 
 export default {
   components: {
-    FullCalendar
+    FullCalendar,
+    popupCalDetail
   },
   data() {
     return {
+      popupDefaultOpt: new DialogOption(),
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
         locale: 'ko',
+        eventClick: this.handleEventClick,
         events: [],
       },
-
+      showModal: false,
+      selectedEvent: null,
     }
   },
   created() {
@@ -35,6 +53,35 @@ export default {
     this.calendarList();
   },
   methods: {
+
+    // handleEventClick(clickInfo){
+    //   console.log('clickInfo >>>', clickInfo.event.title);
+    //   this.$router.push({
+    //     name: 'cal-detail',
+    //     params: {
+    //       eventId: clickInfo.event.id,
+    //       eventTitle:clickInfo.event.title
+    //     } });
+    // },
+    handleEventClick(clickInfo){
+      console.log('clickInfo >>>', clickInfo.event.title);
+      this.selectedEvent = clickInfo.event;
+      this.showModal = true;
+      //sconsole.log('  this.selectedEvent>>>',  this.selectedEvent.title);
+      //this.showAlert(clickInfo.event.title);
+      this.$refs.popupDetail.show(clickInfo.event.title)
+
+    },
+    // showAlert(msg){
+    //   this.popupDefaultOpt = new DialogOption({
+    //     message: msg
+    //   })
+    //   this.$refs.popupDefault.show();
+    // },
+
+    closeModal() {
+      this.showModal = false;
+    },
     calendarList() {
       axios.get('http://localhost:8080/calendar')
           .then(res => {
@@ -57,4 +104,42 @@ export default {
 .custom-calendar {
   height: 600px;
 }
+
+   /* 모달 스타일 */
+ .modal {
+   display: none; /* 초기에는 숨김 */
+   position: fixed; /* 고정된 위치 */
+   z-index: 1; /* 다른 요소들 위에 표시 */
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   overflow: auto; /* 스크롤이 넘치면 스크롤바 표시 */
+   background-color: rgba(0,0,0,0.4); /* 배경색과 투명도 조절 */
+ }
+
+/* 모달 내용 스타일 */
+.modal-content {
+  background-color: #fefefe; /* 모달 내용 배경색 */
+  margin: 15% auto; /* 모달 내용 위치 조절 */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* 모달 닫기 버튼 스타일 */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 </style>
