@@ -56,7 +56,7 @@ export default {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
         locale: 'ko',
-        eventClick: this.handleEventClick,
+        //eventClick: this.handleEventClick,
         events: [],
         //dateClick: this.handleDateClick,
         eventClick: this.handleEventClick,
@@ -117,11 +117,9 @@ export default {
         console.error(err);
       });
     },
-    handleEventClick(clickedInfo){
-      console.log('Clicked event:', clickedInfo.event);
-      console.log('Clicked event title:', clickedInfo.event.start);
 
-    },
+
+
     handleDateClick: function(arg) {
       alert('date click! : ' + arg.dateStr)
     }
