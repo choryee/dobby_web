@@ -1,7 +1,14 @@
 <template>
   <div class="container-fluid px-4">
     <h4 class="mt-4">캘린더 -- calendar.vue </h4>
-    <FullCalendar :options="calendarOptions"/>
+<!--    <FullCalendar :options="calendarOptions" @eventClick="handleEventClick">-->
+    <FullCalendar :options="calendarOptions" >
+      <template v-slot:eventContent='arg'>
+        <b>{{ arg.start }}</b>
+        <i>{{ arg.event.title }}</i>
+      </template>
+    </FullCalendar>
+
   </div>
 </template>
 
@@ -10,9 +17,14 @@
 
 
 import axios from 'axios'
+//import FullCalendar from "@fullcalendar/vue2";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"
+
+// import axios from 'axios';
+// import { FullCalendar, dayGridPlugin, interactionPlugin } from "@fullcalendar/vue3";
+
 
 export default {
   components: {
@@ -25,6 +37,10 @@ export default {
         initialView: 'dayGridMonth',
         locale: 'ko',
         events: [],
+        //dateClick: this.handleDateClick,
+        eventClick: this.handleEventClick,
+
+        editable: true, // 이벤트를 편집 가능하고 클릭 가능하게 설정
       },
 
     }
@@ -50,6 +66,14 @@ export default {
         console.error(err);
       });
     },
+    handleEventClick(clickedInfo){
+      console.log('Clicked event:', clickedInfo.event);
+      console.log('Clicked event title:', clickedInfo.event.start);
+
+    },
+    handleDateClick: function(arg) {
+      alert('date click! : ' + arg.dateStr)
+    }
   },
 }
 </script>
