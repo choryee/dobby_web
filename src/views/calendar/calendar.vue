@@ -23,7 +23,7 @@
 <!--      </div>-->
 <!--    </div>-->
     <popupCalDetail ref="popupDetail" />
-    <modal v-bind:modalOpened="modalOpen" :modalInfo="modalInfo" @update-modalOpened ="updatedModalOpened"></modal>
+    <modal v-bind:modalOpened="modalOpen" :modalInfo="modalInfo" @update-modalOpened="updatedModalOpened"></modal>
   </div>
 </template>
 
@@ -39,6 +39,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import popupCalDetail from "@/views/calendar/popup-cal-detail.vue";
 import {DialogOption} from "@/views/calendar/DialogModels.js";
 import modal from '@/views/calendar/modal.vue'
+import * as events from "events";
 
 // import axios from 'axios';
 // import { FullCalendar, dayGridPlugin, interactionPlugin } from "@fullcalendar/vue3";
@@ -57,17 +58,17 @@ export default {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
         locale: 'ko',
-        //eventClick: this.handleEventClick,
         events: [],
-        //dateClick: this.handleDateClick,
+       // dateClick: this.handleDateClick,
         eventClick: this.handleEventClick,
         editable: true, // 이벤트를 편집 가능하고 클릭 가능하게 설정
 
       },
       //showModal: false,
-      selectedEvent: null,
+      selectedEvent: [],
       modalOpen: false,
-      modalInfo:''
+      modalInfo:[],
+      clickedDate:''
     }
   },
   created() {
@@ -76,9 +77,9 @@ export default {
     this.calendarList();
   },
   methods: {
-    updatedModalOpened(arg){
-      console.log(' arg>>>', arg);
-      this.modalOpen=false;
+    updatedModalOpened({emitModal}){
+      console.log(' arg>>>', emitModal);
+      this.modalOpen = false;
     },
     showModal() {
       this.modalOpen = true;
@@ -98,9 +99,9 @@ export default {
     // },
     handleEventClick(clickInfo){
       this.modalOpen=true;
-      console.log('clickInfo >>>', clickInfo.event.title);
-      this.selectedEvent = clickInfo.event;
-      this.modalInfo=clickInfo.event.title;
+      console.log('clickInfo >>>', clickInfo.event);
+      //this.selectedEvent = clickInfo.event;
+      this.modalInfo = clickInfo.event;
       //this.showModal();
       //sconsole.log('  this.selectedEvent>>>',  this.selectedEvent.title);
       //this.showAlert(clickInfo.event.title);
@@ -135,10 +136,21 @@ export default {
       });
     },
 
+    changingDate(dateParam){
+      const date = new Date(dateParam);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
 
+      const formattedDate = `${year}-${month}-${day}`;
+      console.log(formattedDate); // "2024-04-17" 출력
+      return formattedDate;
+    },
 
     handleDateClick: function(arg) {
+      this.clickedDate = arg.dateStr;
       alert('date click! : ' + arg.dateStr)
+      return arg.dateStr;
     }
   },
 }
