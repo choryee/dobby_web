@@ -17,6 +17,7 @@
     "billboard.js": "^3.10.3",
     "bootstrap": "^5.3.2",
     "bootstrap-vue-3": "^0.5.1",
+    "bulma": "^1.0.0",
     "core-js": "^3.8.3",
     "summernote": "^0.8.20",
     "vue": "^3.3.8",

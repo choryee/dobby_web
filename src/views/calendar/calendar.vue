@@ -23,7 +23,7 @@
 <!--      </div>-->
 <!--    </div>-->
     <popupCalDetail ref="popupDetail" />
-
+    <modal v-bind:modalOpened="modalOpen" :modalInfo="modalInfo" @update-modalOpened ="updatedModalOpened"></modal>
   </div>
 </template>
 
@@ -47,7 +47,8 @@ import modal from '@/views/calendar/modal.vue'
 export default {
   components: {
     FullCalendar,
-    popupCalDetail
+    popupCalDetail,
+    modal
   },
   data() {
     return {
@@ -60,11 +61,13 @@ export default {
         events: [],
         //dateClick: this.handleDateClick,
         eventClick: this.handleEventClick,
-
         editable: true, // 이벤트를 편집 가능하고 클릭 가능하게 설정
+
       },
-      showModal: false,
+      //showModal: false,
       selectedEvent: null,
+      modalOpen: false,
+      modalInfo:''
     }
   },
   created() {
@@ -73,6 +76,16 @@ export default {
     this.calendarList();
   },
   methods: {
+    updatedModalOpened(arg){
+      console.log(' arg>>>', arg);
+      this.modalOpen=false;
+    },
+    showModal() {
+      this.modalOpen = true;
+    },
+    closeModal(event) { // event는 $emit의 value
+      this.modalOpen = event;
+    },
 
     // handleEventClick(clickInfo){
     //   console.log('clickInfo >>>', clickInfo.event.title);
@@ -84,14 +97,20 @@ export default {
     //     } });
     // },
     handleEventClick(clickInfo){
+      this.modalOpen=true;
       console.log('clickInfo >>>', clickInfo.event.title);
       this.selectedEvent = clickInfo.event;
-      this.showModal = true;
+      this.modalInfo=clickInfo.event.title;
+      //this.showModal();
       //sconsole.log('  this.selectedEvent>>>',  this.selectedEvent.title);
       //this.showAlert(clickInfo.event.title);
-      this.$refs.popupDetail.show(clickInfo.event.title)
+      //this.$refs.popupDetail.show(clickInfo.event.title)
+      //this.modalInfo(clickInfo.event.title);
 
     },
+    // modalInfo(item){
+    //   console.log('item >>>', item);
+    // },
     // showAlert(msg){
     //   this.popupDefaultOpt = new DialogOption({
     //     message: msg
@@ -99,9 +118,7 @@ export default {
     //   this.$refs.popupDefault.show();
     // },
 
-    closeModal() {
-      this.showModal = false;
-    },
+
     calendarList() {
       axios.get('http://localhost:8080/calendar')
           .then(res => {
