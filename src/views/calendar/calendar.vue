@@ -11,6 +11,7 @@
 <!--    </FullCalendar>-->
 
 
+    <modal v-bind:modalOpened="modalOpen" :modalInfo="modalInfo" @update-modalOpened="updatedModalOpened"></modal>
     <FullCalendar :options="calendarOptions"/>
     <!-- 모달 -->
 <!--    <div v-if="showModal" class="modal">-->
@@ -23,7 +24,6 @@
 <!--      </div>-->
 <!--    </div>-->
     <popupCalDetail ref="popupDetail" />
-    <modal v-bind:modalOpened="modalOpen" :modalInfo="modalInfo" @update-modalOpened="updatedModalOpened"></modal>
   </div>
 </template>
 
@@ -134,17 +134,6 @@ export default {
           }).catch(err => {
         console.error(err);
       });
-    },
-
-    changingDate(dateParam){
-      const date = new Date(dateParam);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-
-      const formattedDate = `${year}-${month}-${day}`;
-      console.log(formattedDate); // "2024-04-17" 출력
-      return formattedDate;
     },
 
     handleDateClick: function(arg) {
